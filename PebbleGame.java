@@ -9,12 +9,39 @@ public class PebbleGame
 {
     private int numberOfPlayers;
 
+    private int[] XRange;
+    private int[] YRange;
+    private int[] ZRange;
+
+    
     // Changed the ranges to be an array of arrays; just helps with looping when initialising the bags.
     private int[][] ranges = new int[3][2];
-
+    
+    private ArrayList<int[]> rangess = new ArrayList<>();
+    
     private ArrayList<Bag> whiteBags;
     private ArrayList<Bag> blackBags;
     private ArrayList<Player> players = new ArrayList<>();
+    
+    public ArrayList<Bag> getBlackBags()
+    {
+        return this.blackBags;
+    }
+    
+    public int[][] getRanges()
+    {
+        return this.ranges;
+    }
+    
+    public ArrayList<int[]> getRangess()
+    {
+        return this.rangess;
+    }
+    
+    public int getNumberOfPlayers()
+    {
+        return this.numberOfPlayers;
+    }
 
     public PebbleGame(int n, String x, String y, String z)
     {
@@ -22,12 +49,17 @@ public class PebbleGame
         this.ranges[0] = readInRanges(x);
         this.ranges[1] = readInRanges(y);
         this.ranges[2] = readInRanges(z);
+        
+        this.rangess.add(this.ranges[0]);
+        this.rangess.add(this.ranges[1]);
+        this.rangess.add(this.ranges[2]);
+        
         for (int i = 0; i < n; i++) {
             Player temp = new Player();
             players.add(temp);
             temp = null;
         }
-        this.blackBags = initialiseBags();
+        this.blackBags = initialiseBagsTwo();
     }
 
     public class Player
@@ -47,7 +79,7 @@ public class PebbleGame
     {
         String[] values;
         List<String> items = Arrays.asList("foo", "bar");
-        int[] ranges;
+        int[] rangess;
 
         try {
            File myObj = new File(fileName);
@@ -65,12 +97,12 @@ public class PebbleGame
 
         values = items.toArray(new String[0]);
 
-        ranges = Arrays.asList(values).stream().mapToInt(Integer::parseInt).toArray();
+        rangess = Arrays.asList(values).stream().mapToInt(Integer::parseInt).toArray();
 
-        return ranges;
+        return rangess;
     }
 
-    public static PebbleGame Initialise()
+    public static PebbleGame initialiseGame()
     {
         //for user input just access userInput.nextLine();
         Scanner userInput = new Scanner(System.in);
@@ -100,52 +132,120 @@ public class PebbleGame
 
     public ArrayList<Bag> initialiseBags()
     {
-      Random random = new Random();
-      int[] bagMax = new int[3];
-      int totalPebbles = (this.numberOfPlayers * 33) + (random.nextInt(numberOfPlayers) * 10);
-      ArrayList<Bag> tempBags = new ArrayList<>();
+        Random random = new Random();
+        int[] bagMax = new int[3];
+        int totalPebbles = (this.numberOfPlayers * 33) + (random.nextInt(numberOfPlayers) * 10); 
+        ArrayList<Bag> tempBags = new ArrayList<>();
 
-      for (int i = 0; i < 2; i ++) {
-  			int pebblesInBag = random.nextInt(totalPebbles);
-  			bagMax[i] = (pebblesInBag);
-  			totalPebbles -= pebblesInBag;
-  		}
-      bagMax[2] = totalPebbles;
+        for (int i = 0; i < 2; i ++) {
+            int pebblesInBag = random.nextInt(totalPebbles);
+            bagMax[i] = (pebblesInBag);
+            totalPebbles -= pebblesInBag;
+        }
+        bagMax[2] = totalPebbles;
 
-      for (int x = 0; x < 3; x ++)
-      {
-        String letter = "";
-        switch (x)
+        for (int x = 0; x < 3; x ++)
         {
-          case 0:
-            letter = "X";
-            break;
-          case 1:
-            letter = "Y";
-            break;
-          case 2:
-            letter = "Z";
-            break;
+            String letter = "";
+            switch (x)
+            {
+                case 0:
+                letter = "X";
+                break;
+                case 1:
+                letter = "Y";
+                break;
+                case 2:
+                letter = "Z";
+                break;
+            }
+            ArrayList<Pebble> tempPebbles = new ArrayList<>();
+            for (int z = 0; z < bagMax[x]; z ++)
+            {
+                tempPebbles.add(new Pebble(weightInRange(ranges[x][0], ranges[x][1])));
+            }
+            Bag tempBag = new Bag(letter, "Black", tempPebbles);
+            tempBags.add(tempBag);
         }
-        ArrayList<Pebble> tempPebbles = new ArrayList<>();
-        for (int z = 0; z < bagMax[x]; z ++)
-        {
-          tempPebbles.add(new Pebble(weightInRange(ranges[x][0], ranges[x][1])));
-        }
-        Bag tempBag = new Bag(letter, "Black", tempPebbles);
-        tempBags.add(tempBag);
-      }
-      return tempBags;
+        return tempBags;
     }
+    
+    public ArrayList<Bag> initialiseBagsTwo()
+    {
+        Random random = new Random();
+        ArrayList<Bag> tempBags = new ArrayList<>();
+        int shortestInputArray = 0;
+        int temp = 0;
+        for(int[] item : this.getRangess()) {   
+            temp = item.length;
+            if (temp > shortestInputArray) { shortestInputArray = temp; }
+        }
 
+        int numofpebinbagone = (this.getNumberOfPlayers() * 11) + (random.nextInt((shortestInputArray - (this.getNumberOfPlayers() * 11)) - 1 ));
+        int numofpebinbagtwo = (this.getNumberOfPlayers() * 11) + (random.nextInt((shortestInputArray - (this.getNumberOfPlayers() * 11)) - 1 ));
+        int numofpebinbagthree = (this.getNumberOfPlayers() * 11) + (random.nextInt((shortestInputArray - (this.getNumberOfPlayers() * 11)) - 1 ));
+        
+        int[] maximums = new int[3];
+        maximums[0] = numofpebinbagone;
+        maximums[1] = numofpebinbagtwo;
+        maximums[2] = numofpebinbagthree;
+        
+        for (int x = 0; x < 3; x ++)
+        {
+            ArrayList<Pebble> tempPebbles = new ArrayList<>();
+            for (int y = 0; y < maximums[x]; y ++) 
+            {
+                int chosenpebbleindex = random.nextInt(this.getRangess().get(x).length);
+                tempPebbles.add(new Pebble(this.getRangess().get(x)[chosenpebbleindex]));
+                int[] bing = removeElementFromArray(this.getRangess().get(x), chosenpebbleindex);
+                this.getRangess().set(x, bing);
+            }
+            
+            String tempLetter = "";
+            if (x == 0) {tempLetter = "X";}
+            else if (x == 0) {tempLetter = "Y";}
+            else if (x == 0) {tempLetter = "Z";};
+            
+            Bag tempBag = new Bag(tempLetter, "Black", tempPebbles);
+            tempBags.add(tempBag);
+        }
+        return tempBags;
+    }
+    
+    public int[] removeElementFromArray(int[] oldArray, int index)
+    {
+        if (oldArray == null || index < 0 || index >= oldArray.length) {
+            return oldArray;
+        }
+        
+        int[] newArray = new int[oldArray.length - 1];
+ 
+        for (int i = 0, k = 0; i < oldArray.length; i++) {
+            if (i == index) {
+                continue;
+            }
+            newArray[k++] = oldArray[i];
+        }
+
+        return newArray;
+    }
+    
     public int weightInRange(int min, int max) {
       Random random = new Random();
       return random.nextInt((max - min) + 1) + min;
-  	}
+    }
 
     public static void main(String[] args)
     {
-        PebbleGame mainGame = Initialise();
-
+        PebbleGame mainGame = initialiseGame();
+        
+        mainGame.getBlackBags().forEach(bag -> {
+            bag.getPebbles().forEach( peb -> {
+                System.out.println(peb.getWeight());
+            });
+            System.out.println("next");
+        });
+        
+        
     }
 }
