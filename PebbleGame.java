@@ -12,10 +12,6 @@ public class PebbleGame
     private int[] XRange;
     private int[] YRange;
     private int[] ZRange;
-
-    
-    // Changed the ranges to be an array of arrays; just helps with looping when initialising the bags.
-    private int[][] ranges = new int[3][2];
     
     private ArrayList<int[]> rangess = new ArrayList<>();
     
@@ -26,11 +22,6 @@ public class PebbleGame
     public ArrayList<Bag> getBlackBags()
     {
         return this.blackBags;
-    }
-    
-    public int[][] getRanges()
-    {
-        return this.ranges;
     }
     
     public ArrayList<int[]> getRangess()
@@ -46,13 +37,10 @@ public class PebbleGame
     public PebbleGame(int n, String x, String y, String z)
     {
         this.numberOfPlayers = n;
-        this.ranges[0] = readInRanges(x);
-        this.ranges[1] = readInRanges(y);
-        this.ranges[2] = readInRanges(z);
         
-        this.rangess.add(this.ranges[0]);
-        this.rangess.add(this.ranges[1]);
-        this.rangess.add(this.ranges[2]);
+        this.rangess.add(readInRanges(x));
+        this.rangess.add(readInRanges(y));
+        this.rangess.add(readInRanges(z));
         
         for (int i = 0; i < n; i++) {
             Player temp = new Player();
@@ -142,46 +130,6 @@ public class PebbleGame
         return tempGame;
     }
 
-    public ArrayList<Bag> initialiseBags()
-    {
-        Random random = new Random();
-        int[] bagMax = new int[3];
-        int totalPebbles = (this.numberOfPlayers * 33) + (random.nextInt(numberOfPlayers) * 10); 
-        ArrayList<Bag> tempBags = new ArrayList<>();
-
-        for (int i = 0; i < 2; i ++) {
-            int pebblesInBag = random.nextInt(totalPebbles);
-            bagMax[i] = (pebblesInBag);
-            totalPebbles -= pebblesInBag;
-        }
-        bagMax[2] = totalPebbles;
-
-        for (int x = 0; x < 3; x ++)
-        {
-            String letter = "";
-            switch (x)
-            {
-                case 0:
-                letter = "X";
-                break;
-                case 1:
-                letter = "Y";
-                break;
-                case 2:
-                letter = "Z";
-                break;
-            }
-            ArrayList<Pebble> tempPebbles = new ArrayList<>();
-            for (int z = 0; z < bagMax[x]; z ++)
-            {
-                tempPebbles.add(new Pebble(weightInRange(ranges[x][0], ranges[x][1])));
-            }
-            Bag tempBag = new Bag(letter, "Black", tempPebbles);
-            tempBags.add(tempBag);
-        }
-        return tempBags;
-    }
-    
     public ArrayList<Bag> initialiseBagsTwo()
     {
         Random random = new Random();
