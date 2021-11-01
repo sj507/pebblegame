@@ -67,8 +67,20 @@ public class PebbleGame
 
         private int id;
         private ArrayList<Pebble> playerPebbles;
+        private String lastBlackBagDrawnFrom;
 
-
+        
+        
+        public synchronized void Draw()
+        {
+            //draw a pebble from a black bag at random
+        }
+        
+        public synchronized void Discard()
+        {
+            //discard a pebble from their hand to the white bag paired with the last drawn black bag
+        }
+        
         public Player()
         {
             this.id = players.size() + 1;
