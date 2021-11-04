@@ -3,18 +3,18 @@ public class Pebble
 {
     private int weight;
 
-    public int getWeight() 
+    public int getWeight()
     {
         return this.weight;
     }
-    
-    public Pebble(int w) 
+
+    public Pebble(int w)
     {
-        if (w < 0) 
+        if (w < 0)
         {
             //throw exeception
         }
-        else 
+        else
         {
             this.weight = w;
         }
