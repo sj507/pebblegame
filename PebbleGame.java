@@ -359,6 +359,7 @@ public class PebbleGame
         Scanner userInput = new Scanner(System.in);
         Boolean tempBool = true;
         int numOfPlayers = 0;
+        String numOfPlayersString = "";
         String fileOne = "";
         String fileTwo = "";
         String fileThree = "";
@@ -373,7 +374,8 @@ public class PebbleGame
 
         while (tempBool) {
           try  {
-            numOfPlayers = Integer.parseInt(userInput.nextLine());
+            numOfPlayersString = userInput.nextLine();
+            numOfPlayers = Integer.parseInt(numOfPlayersString);
             if (numOfPlayers > 0) {
               tempBool = false;
             }
@@ -383,6 +385,11 @@ public class PebbleGame
             }
           }
           catch (NumberFormatException e) {
+            if (numOfPlayersString.equals("E"))
+            {
+                System.exit(0);
+            }
+              
             System.out.println("Please enter a positive integer.");
             System.out.println("Please enter the number of players:");
           }
@@ -407,6 +414,11 @@ public class PebbleGame
             }
           }
           catch (FileNotFoundException e) {
+            if (fileOne.equals("E"))
+            {
+                System.exit(0);
+            }
+              
             System.out.println("File does not exist.");
             System.out.println("Please enter location of bag number 0 to load:");
           }
@@ -431,7 +443,12 @@ public class PebbleGame
             }
           }
           catch (FileNotFoundException e) {
-            System.out.println("File does not exist.");
+            if (fileTwo.equals("E"))
+            {
+                System.exit(0);
+            }
+              
+              System.out.println("File does not exist.");
             System.out.println("Please enter location of bag number 1 to load:");
           }
         }
@@ -455,7 +472,12 @@ public class PebbleGame
             }
           }
           catch (FileNotFoundException e) {
-            System.out.println("File does not exist.");
+            if (fileThree.equals("E"))
+            {
+                System.exit(0);
+            }
+              
+              System.out.println("File does not exist.");
             System.out.println("Please enter location of bag number 2 to load:");
           }
         }
@@ -533,6 +555,33 @@ public class PebbleGame
     public static void main(String[] args)
     {
         PebbleGame mainGame = initialiseGame();
+        Scanner userInput = new Scanner(System.in);
+        boolean warning = false;
+        
+        for (Bag bag : mainGame.getBlackBags()) 
+        {
+            for (Pebble peb : bag.getPebbles())
+            {
+                if (peb.getPositive() == false) 
+                {
+                    warning = true;
+                }
+            }
+        }
+        
+        
+        
+           
+        if (warning)
+        {
+            System.out.println("Warning you have input files with atleast 1 negative pebble weight");
+            try {Thread.sleep(500);}
+            catch (InterruptedException e) {e.printStackTrace();}
+        }
+        
+        
+       
+        
 
         ArrayList<Thread> threads = new ArrayList<>();
 
