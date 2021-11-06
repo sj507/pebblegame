@@ -110,7 +110,7 @@ public class PebbleGame
         public int calculateScore() {
           int score = 0;
 
-          for (Pebble pebble : this.getPebbles()) {
+          for (Pebble pebble : this.playerPebbles) {
             score += pebble.getWeight();
           }
 
@@ -159,7 +159,7 @@ public class PebbleGame
             }
         }
 
-        public synchronized void Discard()
+        public void Discard()
         {
             //discard a pebble from their hand to the white bag paired with the last drawn black bag
             Random random = new Random();
@@ -188,7 +188,7 @@ public class PebbleGame
                 }
 
                 System.out.println("Player " + String.valueOf(this.getId()) + " has discarded a " +
-                String.valueOf(tempPebble.getWeight()) +  " from bag " + tempBag.getName());
+                String.valueOf(tempPebble.getWeight()) +  " to bag " + tempBag.getName());
             }
         }
 
@@ -266,6 +266,12 @@ public class PebbleGame
               running = false;
               System.out.println("Player " + String.valueOf(this.getId()) + " is the winner!");
             }
+            try {
+              Thread.sleep(1000);
+            }
+            catch (InterruptedException e) {
+              e.printStackTrace();
+            }
 
             while (running) {
               this.Discard();
@@ -278,6 +284,9 @@ public class PebbleGame
                 refillBags();
               }
               this.playerPebbles.add(this.Draw());
+              if (this.calculateScore() == 100) {
+                running = false;
+              }
               tempString = "";
               for (Pebble tempPebble : this.playerPebbles) {
                 tempString += " " + tempPebble.getWeight();
@@ -348,6 +357,11 @@ public class PebbleGame
     {
         //for user input just access userInput.nextLine();
         Scanner userInput = new Scanner(System.in);
+        Boolean tempBool = true;
+        int numOfPlayers = 0;
+        String fileOne = "";
+        String fileTwo = "";
+        String fileThree = "";
 
         System.out.println("Welcome to the PebbleGame!!");
         System.out.println("You will be asked to enter the number of players.");
@@ -356,17 +370,96 @@ public class PebbleGame
         System.out.println("The game will then be simulated, and the output written to files in this directory.");
 
         System.out.println("Please enter the number of players:");
-        String numofPlayers = userInput.nextLine();
-        int numOfPlayers = Integer.parseInt(numofPlayers);
+
+        while (tempBool) {
+          try  {
+            numOfPlayers = Integer.parseInt(userInput.nextLine());
+            if (numOfPlayers > 0) {
+              tempBool = false;
+            }
+            else {
+              System.out.println("Integer must be positive.");
+              System.out.println("Please enter the number of players:");
+            }
+          }
+          catch (NumberFormatException e) {
+            System.out.println("Please enter a positive integer.");
+            System.out.println("Please enter the number of players:");
+          }
+        }
+
+        tempBool = true;
 
         System.out.println("Please enter location of bag number 0 to load:");
-        String fileOne = userInput.nextLine();
+
+        while (tempBool) {
+          try {
+            fileOne = userInput.nextLine();
+            File myObj = new File(fileOne);
+            Scanner myReader = new Scanner(myObj);
+            String handle = fileOne.substring(fileOne.indexOf(".") + 1, fileOne.length());
+            if (handle.equals("txt") || handle.equals("csv")) {
+              tempBool = false;
+            }
+            else {
+              System.out.println("File must be .txt or .csv");
+              System.out.println("Please enter location of bag number 0 to load:");
+            }
+          }
+          catch (FileNotFoundException e) {
+            System.out.println("File does not exist.");
+            System.out.println("Please enter location of bag number 0 to load:");
+          }
+        }
+
+        tempBool = true;
 
         System.out.println("Please enter location of bag number 1 to load:");
-        String fileTwo = userInput.nextLine();
+
+        while (tempBool) {
+          try {
+            fileTwo = userInput.nextLine();
+            File myObj = new File(fileTwo);
+            Scanner myReader = new Scanner(myObj);
+            String handle = fileTwo.substring(fileTwo.indexOf(".") + 1, fileTwo.length());
+            if (handle.equals("txt") || handle.equals("csv")) {
+              tempBool = false;
+            }
+            else {
+              System.out.println("File must be .txt or .csv");
+              System.out.println("Please enter location of bag number 1 to load:");
+            }
+          }
+          catch (FileNotFoundException e) {
+            System.out.println("File does not exist.");
+            System.out.println("Please enter location of bag number 1 to load:");
+          }
+        }
+
+        tempBool = true;
 
         System.out.println("Please enter location of bag number 2 to load:");
-        String fileThree = userInput.nextLine();
+
+        while (tempBool) {
+          try {
+            fileThree = userInput.nextLine();
+            File myObj = new File(fileThree);
+            Scanner myReader = new Scanner(myObj);
+            String handle = fileThree.substring(fileThree.indexOf(".") + 1, fileThree.length());
+            if (handle.equals("txt") || handle.equals("csv")) {
+              tempBool = false;
+            }
+            else {
+              System.out.println("File must be .txt or .csv");
+              System.out.println("Please enter location of bag number 2 to load:");
+            }
+          }
+          catch (FileNotFoundException e) {
+            System.out.println("File does not exist.");
+            System.out.println("Please enter location of bag number 2 to load:");
+          }
+        }
+
 
         PebbleGame tempGame = new PebbleGame(numOfPlayers, fileOne, fileTwo, fileThree);
         return tempGame;
@@ -405,8 +498,8 @@ public class PebbleGame
 
             String tempLetter = "";
             if (x == 0) {tempLetter = "X";}
-            else if (x == 0) {tempLetter = "Y";}
-            else if (x == 0) {tempLetter = "Z";};
+            else if (x == 1) {tempLetter = "Y";}
+            else if (x == 2) {tempLetter = "Z";};
 
             Bag tempBag = new Bag(tempLetter, "Black", tempPebbles);
             tempBags.add(tempBag);
