@@ -152,6 +152,9 @@ public class PebbleGame
                         lastDrawnBlackBag = "Z";
                 }
 
+                System.out.println("Player " + String.valueOf(this.getId()) + " has drawn a " +
+                String.valueOf(drawnPebble.getWeight()) +  " from bag " + tempBag.getName());
+
                 return drawnPebble;
             }
         }
@@ -183,6 +186,9 @@ public class PebbleGame
                         tempBag.getPebbles().add(tempPebble);
                         whiteBags.set(2, tempBag);
                 }
+
+                System.out.println("Player " + String.valueOf(this.getId()) + " has discarded a " +
+                String.valueOf(tempPebble.getWeight()) +  " from bag " + tempBag.getName());
             }
         }
 
@@ -263,11 +269,20 @@ public class PebbleGame
 
             while (running) {
               this.Discard();
+              String tempString = "";
+              for (Pebble tempPebble : this.playerPebbles) {
+                tempString += " " + tempPebble.getWeight();
+              }
+              System.out.println("Player " + String.valueOf(this.getId()) + " hand is " + tempString);
               if (checkBlackBagsEmpty()) {
                 refillBags();
               }
               this.playerPebbles.add(this.Draw());
-              // System.out.println(this.calculateScore());
+              tempString = "";
+              for (Pebble tempPebble : this.playerPebbles) {
+                tempString += " " + tempPebble.getWeight();
+              }
+              System.out.println("Player " + String.valueOf(this.getId()) + " hand is " + tempString);
               if (this.calculateScore() == 100) {
                 running = false;
                 System.out.println("Player " + String.valueOf(this.getId()) + " is the winner!");
@@ -445,13 +460,13 @@ public class PebbleGame
             e.printStackTrace();
           }
 
-        mainGame.getPlayers().forEach(player -> {
-            System.out.println("Player " + String.valueOf(player.getId()));
-            player.getPebbles().forEach(peb -> {
-                System.out.println(peb.getWeight());
-            });
-            System.out.println("Next Player");
-        });
+        // mainGame.getPlayers().forEach(player -> {
+        //     System.out.println("Player " + String.valueOf(player.getId()));
+        //     player.getPebbles().forEach(peb -> {
+        //         System.out.println(peb.getWeight());
+        //     });
+        //     System.out.println("Next Player");
+        // });
 
     }
 }
