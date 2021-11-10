@@ -92,14 +92,17 @@ public class PebbleGameTest
         PebbleGame testGame = setUpPebbleGame();
         ArrayList<Bag> blackBags = testGame.getBlackBags();
         
-        for (Bag blackBag : blackBags)
-        {
-            if (blackBag.getPebbles().size() == 0)
-            {
-                assertTrue("Empty Black bags are being detected", testGame.checkBlackBagsEmpty());
-                assertFalse("Empty Black bags are not being detected" , testGame.checkBlackBagsEmpty());
-            }
+         
+        assertFalse("Empty Black bags are not being detected" , testGame.checkBlackBagsEmpty());  
+        
+        for (Bag blackBag : blackBags) {
+            blackBag.getPebbles().clear();
         }
+        
+        testGame.setBlackBags(blackBags);
+        
+        assertTrue("Empty Black bags are being detected", testGame.checkBlackBagsEmpty());  
+
     }
     
     @Test
