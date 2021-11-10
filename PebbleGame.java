@@ -30,6 +30,11 @@ public class PebbleGame
     {
         return this.blackBags;
     }
+    
+    public ArrayList<Bag> getWhiteBags()
+    {
+        return this.whiteBags;
+    }
 
     public ArrayList<Player> getPlayers() {
       return this.players;
@@ -102,6 +107,18 @@ public class PebbleGame
       }
 
       return true;
+    }
+    
+    public static boolean contains(int[] array, int v) {
+
+        boolean result = false;
+        for(int i : array){
+            if(i == v){
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     public class Player implements Runnable
@@ -226,6 +243,11 @@ public class PebbleGame
         public ArrayList<Pebble> getPebbles()
         {
             return this.playerPebbles;
+        }
+        
+        public void setPebbles(ArrayList<Pebble> pebs)
+        {
+            this.playerPebbles = pebs;
         }
 
         public int getId()
@@ -394,7 +416,7 @@ public class PebbleGame
     public static int[] readInRanges(String fileName) //ADD A CHECK TO MAKE SURE THAT PEBBLES WIEHGTS ARE POSTIVIE
     {
         String[] values;
-        List<String> items = Arrays.asList("foo", "bar");
+        List<String> items = Arrays.asList();
         int[] rangess;
 
         try {
@@ -596,10 +618,6 @@ public class PebbleGame
 
     public int[] removeElementFromArray(int[] oldArray, int index)
     {
-        if (oldArray == null || index < 0 || index >= oldArray.length) {
-            return oldArray;
-        }
-
         int[] newArray = new int[oldArray.length - 1];
 
         for (int i = 0, k = 0; i < oldArray.length; i++) {
@@ -612,10 +630,6 @@ public class PebbleGame
         return newArray;
     }
 
-    public void initialisePlayerBags()
-    {
-
-    }
 
     public static void main(String[] args)
     {
