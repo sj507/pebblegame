@@ -1,5 +1,3 @@
-
-
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
@@ -7,26 +5,23 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 /**
- * The test class PebbleGameTest.
+ * The test class PebbleGameTest. This class is used to test the functionality of a selection of
+  methods in the project. If one of these tests fails, the PebbleGame will most likely not
+  execute correctly.
  *
- * @author  (your name)
- * @version (a version number or a date)
+ * @author Sam, Matt
+ * @version 1.0
  */
 public class PebbleGameTest
 {
-    /**
-     * Default constructor for test class PebbleGameTest
-     */
-    public PebbleGameTest()
-    {
-    }
 
     /**
-     * Sets up the test fixture.
+     * Used to set up an instance of PebbleGame with 3 players and ranges from the file
+     testRanges.txt.
      *
      * Called before every test case method.
      */
-   
+
     public PebbleGame setUpPebbleGame()
     {
       String f = "testRanges.txt";
@@ -34,33 +29,12 @@ public class PebbleGameTest
 
       return testGame;
     }
-    
-    
 
     /**
-     * Tears down the test fixture.
-     *
-     * Called after every test case method.
+     * Tests to make sure that the white bags have been set up correctly, specifically testing their
+     colour and name variables.
      */
-    @After
-    public void tearDown()
-    {
-    }
 
-
-    @Test
-    public void PebbleGameTest()
-    {
-        PebbleGame testGame = setUpPebbleGame();
-        assertEquals("Number of players did not match expected value", 3, testGame.getNumberOfPlayers(), 0);
-        for (int[] range : testGame.getRangess()) {
-          for (int i = 0; i < range.length; i ++) {
-
-          }
-        }
-
-    }
-    
     @Test
     public void initialiseWhiteBagsTest()
     {
@@ -85,32 +59,42 @@ public class PebbleGameTest
         }
       }
     }
-    
+
+    /**
+     * Used to test the function that check whether the black bags are empty or not. Tests the two
+     possible outcomes - either at least one bag is empty or no bags are empty.
+     */
+
     @Test
     public void checkBlackBagsEmptyTest()
     {
         PebbleGame testGame = setUpPebbleGame();
         ArrayList<Bag> blackBags = testGame.getBlackBags();
-        
-         
-        assertFalse("Empty Black bags are not being detected" , testGame.checkBlackBagsEmpty());  
-        
+
+
+        assertFalse("Empty Black bags are not being detected" , testGame.checkBlackBagsEmpty());
+
         for (Bag blackBag : blackBags) {
             blackBag.getPebbles().clear();
         }
-        
+
         testGame.setBlackBags(blackBags);
-        
-        assertTrue("Empty Black bags are being detected", testGame.checkBlackBagsEmpty());  
+
+        assertTrue("Empty Black bags are being detected", testGame.checkBlackBagsEmpty());
 
     }
-    
+
+    /**
+     * Used to test the calculate score method. Simply used to ensure the method sums up the pebble
+     weights correctly.
+     */
+
     @Test
     public void calculateScoreTest()
     {
         Object lock = new Object();
         PebbleGame testGame = setUpPebbleGame();
-        
+
         PebbleGame.Player testPlayer = testGame.new Player(lock);
         ArrayList<Pebble> pebs = new ArrayList<Pebble>();
         for (int i = 0; i < 10; i ++)
@@ -118,23 +102,34 @@ public class PebbleGameTest
             pebs.add(new Pebble(i+1));
         }
         testPlayer.setPebbles(pebs);
-        
+
         assertEquals("calculateScore() is incorrect", 55, testPlayer.calculateScore());
     }
-    
+
+    /**
+     * Used to test the method that removes an element from an array and returns the array with the
+     element removed.
+     */
+
     @Test
     public void removeElementFromArrayTest() {
       PebbleGame testGame = setUpPebbleGame();
-      
+
       int[] testArray2 = {1, 2, 3, 4, 5};
-      
+
 
       int[] testArray3 = testGame.removeElementFromArray(testArray2, 2);
-      
+
       testGame.removeElementFromArray(testArray2, 2);
       assertEquals("The element at index 2 should have been removed.", testArray3[2], testArray2[3]);
     }
-    
+
+    /**
+     * Tests to ensure the black bags are correctly initialised. Works almost identically to the
+     method that tests the white bags, with the additional functionality of ensuring that the bags
+     are filled with pebbles upon creation.
+     */
+
     @Test
     public void initialiseBlackBagsTest() {
 
@@ -163,7 +158,11 @@ public class PebbleGameTest
         assertNotSame("Black bag is empty", 0, blackBag.getPebbles().size());
       }
     }
-    
+
+    /**
+
+     */
+
     @Test
     public void readInRangesTest() {
       int[] range = PebbleGame.readInRanges("testRanges.txt");
@@ -177,22 +176,3 @@ public class PebbleGameTest
   		}
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

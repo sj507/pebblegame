@@ -1,11 +1,16 @@
 import java.util.ArrayList;
 
+/**
+ * Support class Bag. Acts as a bag in the pebble game. Can be a white bag or a black bag. Contains
+ an array of pebbles that must all be positive. 
+ * @author Sam, Matt
+ * @version 1.0
+ */
+
 public class Bag {
 
-    //list pebbles
     private ArrayList<Pebble> pebbles = new ArrayList<Pebble>();
 
-    //name string
     private String Name;
     private String Colour;
 
@@ -31,6 +36,11 @@ public class Bag {
         return pebbles;
     }
 
+    /**
+     * Used to remove pebble from the pebble array based on an index. The removed pebble in then
+     returned.
+     */
+
     public Pebble dropPebble(int i)
     {
         Pebble temp = pebbles.get(i);
@@ -42,6 +52,10 @@ public class Bag {
     {
         this.pebbles = p;
     }
+
+    /**
+     * Simple override method used to print out the pebbles in the bag in a readable manner.
+     */
 
     @Override
 		public String toString() {
