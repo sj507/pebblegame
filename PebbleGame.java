@@ -52,8 +52,7 @@ public class PebbleGame
         threads.add(new Thread(player));
       });
     }
-    
-    //Constructor method for the pebble game itself.
+
     public PebbleGame(int n, String x, String y, String z)
     {
         this.numberOfPlayers = n;
@@ -75,8 +74,7 @@ public class PebbleGame
 
         this.running = true;
     }
-    
-    //Method to initialise all of the white bags.
+
     public ArrayList<Bag> initialiseWhiteBags()
     {
         ArrayList<Bag> tempBags = new ArrayList<Bag>();
@@ -99,8 +97,7 @@ public class PebbleGame
 
       return true;
     }
-    
-    //Player class to represent the players and the threads.
+
     public class Player implements Runnable
     {
 
@@ -305,8 +302,7 @@ public class PebbleGame
 
         }
     }
-    
-    //Method to check if any of the black bags are empty
+
     public boolean checkBlackBagsEmpty() {
       for (Bag blackBag : this.blackBags) {
         if (blackBag.getPebbles().size() == 0) {
@@ -315,8 +311,7 @@ public class PebbleGame
       }
       return false;
     }
-    
-    //Method to refill all the nessesary black bags by emptying the corresponding white bag into it. 
+
     public void refillBags() {
       for (int i = 0; i < this.blackBags.size(); i ++) {
         Bag tempBlackBag = this.blackBags.get(i);
@@ -330,7 +325,7 @@ public class PebbleGame
       }
     }
 
-    //Method to read in the range files to assist in creating the black bags.
+
     public static int[] readInRanges(String fileName) //ADD A CHECK TO MAKE SURE THAT PEBBLES WIEHGTS ARE POSTIVIE
     {
         String[] values;
@@ -357,8 +352,7 @@ public class PebbleGame
 
         return rangess;
     }
-    
-    //Method for handling the user side of initialising the game.
+
     public static PebbleGame initialiseGame()
     {
         //for user input just access userInput.nextLine();
@@ -492,8 +486,7 @@ public class PebbleGame
         PebbleGame tempGame = new PebbleGame(numOfPlayers, fileOne, fileTwo, fileThree);
         return tempGame;
     }
-    
-    //Method which initialises the black bags for the game.
+
     public ArrayList<Bag> initialiseBlackBags()
     {
         Random random = new Random();
@@ -535,8 +528,7 @@ public class PebbleGame
         }
         return tempBags;
     }
-    
-    //Method which takes and array and an index and returns the list back but with the indexed item removed
+
     public int[] removeElementFromArray(int[] oldArray, int index)
     {
         if (oldArray == null || index < 0 || index >= oldArray.length) {
@@ -559,8 +551,7 @@ public class PebbleGame
     {
 
     }
-    
-    //Main Method where the game is initialised from and the threads are started
+
     public static void main(String[] args)
     {
         PebbleGame mainGame = initialiseGame();

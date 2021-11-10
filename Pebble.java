@@ -1,6 +1,3 @@
-/**
- * Pebble class, for creating all the pebbles that we would need and storing any methods that an individual pebble might need.
- */
 
 public class Pebble
 {
