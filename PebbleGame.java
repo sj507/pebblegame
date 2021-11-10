@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.*;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 
 public class PebbleGame
 {
@@ -42,17 +45,6 @@ public class PebbleGame
         return this.numberOfPlayers;
     }
 
-    public void initialisePlayerThreads(PebbleGame pebbleGame)
-    {
-
-      ArrayList<Thread> threads = new ArrayList<>();
-
-      pebbleGame.getPlayers().forEach(player -> {
-
-        threads.add(new Thread(player));
-      });
-    }
-
     public PebbleGame(int n, String x, String y, String z)
     {
         this.numberOfPlayers = n;
@@ -67,6 +59,20 @@ public class PebbleGame
             Player temp = new Player(lock);
             players.add(temp);
             temp = null;
+            String tempFileName = "player"+(i+1)+"_output.txt";
+            try {
+                File myObj = new File(tempFileName);
+                if (myObj.createNewFile()) {
+                    
+                } else {
+                    myObj.delete();
+                    myObj.createNewFile();
+                }
+            } catch (IOException e) {
+               System.out.println("An error occurred.");
+               e.printStackTrace();
+            }
+            tempFileName = "";
         }
         this.blackBags = initialiseBlackBags();
 
@@ -152,8 +158,17 @@ public class PebbleGame
                         lastDrawnBlackBag = "Z";
                 }
 
-                System.out.println("Player " + String.valueOf(this.getId()) + " has drawn a " +
-                String.valueOf(drawnPebble.getWeight()) +  " from bag " + tempBag.getName());
+                
+                
+                try {
+                    FileWriter myWriter = new FileWriter("player"+(this.getId())+"_output.txt", true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(myWriter);
+                    bufferedWriter.write("Player " + String.valueOf(this.getId() ) + " has drawn a " + String.valueOf(drawnPebble.getWeight()) +  " from bag " + tempBag.getName());
+                    bufferedWriter.newLine();
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 return drawnPebble;
             }
@@ -186,9 +201,17 @@ public class PebbleGame
                         tempBag.getPebbles().add(tempPebble);
                         whiteBags.set(2, tempBag);
                 }
+                
+                try {
+                    FileWriter myWriter = new FileWriter("player"+(this.getId() )+"_output.txt", true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(myWriter);
+                    bufferedWriter.write("Player " + String.valueOf(this.getId()) + " has discarded a " + String.valueOf(tempPebble.getWeight()) +  " to bag " + tempBag.getName());
+                    bufferedWriter.newLine();
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-                System.out.println("Player " + String.valueOf(this.getId()) + " has discarded a " +
-                String.valueOf(tempPebble.getWeight()) +  " to bag " + tempBag.getName());
             }
         }
 
@@ -265,6 +288,16 @@ public class PebbleGame
             if (this.calculateScore() == 100) {
               running = false;
               System.out.println("Player " + String.valueOf(this.getId()) + " is the winner!");
+                
+              try {
+                    FileWriter myWriter = new FileWriter("player"+(this.getId())+"_output.txt", true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(myWriter);
+                    bufferedWriter.write("Player " + String.valueOf(this.getId()) + " is the winner!");
+                    bufferedWriter.newLine();
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             try {
               Thread.sleep(1000);
@@ -279,7 +312,18 @@ public class PebbleGame
               for (Pebble tempPebble : this.playerPebbles) {
                 tempString += " " + tempPebble.getWeight();
               }
-              System.out.println("Player " + String.valueOf(this.getId()) + " hand is " + tempString);
+              
+              
+              try {
+                    FileWriter myWriter = new FileWriter("player"+(this.getId())+"_output.txt", true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(myWriter);
+                    bufferedWriter.write("Player " + String.valueOf(this.getId()) + " hand is " + tempString);
+                    bufferedWriter.newLine();
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+              
               if (checkBlackBagsEmpty()) {
                 refillBags();
               }
@@ -291,10 +335,31 @@ public class PebbleGame
               for (Pebble tempPebble : this.playerPebbles) {
                 tempString += " " + tempPebble.getWeight();
               }
-              System.out.println("Player " + String.valueOf(this.getId()) + " hand is " + tempString);
+              
+              
+              try {
+                    FileWriter myWriter = new FileWriter("player"+(this.getId())+"_output.txt", true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(myWriter);
+                    bufferedWriter.write("Player " + String.valueOf(this.getId()) + " hand is " + tempString);
+                    bufferedWriter.newLine();
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+              
               if (this.calculateScore() == 100) {
                 running = false;
                 System.out.println("Player " + String.valueOf(this.getId()) + " is the winner!");
+                
+                try {
+                    FileWriter myWriter = new FileWriter("player"+(this.getId())+"_output.txt", true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(myWriter);
+                    bufferedWriter.write("Player " + String.valueOf(this.getId()) + " is the winner!");
+                    bufferedWriter.newLine();
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
               }
             }
 
