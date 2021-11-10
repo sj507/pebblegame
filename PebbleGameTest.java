@@ -26,8 +26,12 @@ public class PebbleGameTest
      * Called before every test case method.
      */
     @Before
-    public void setUp()
+    public PebbleGame setUp()
     {
+      String f = "testRanges.txt";
+      PebbleGame testGame = new PebbleGame(3, f, f, f);
+
+      return testGame;
     }
 
     /**
@@ -39,11 +43,42 @@ public class PebbleGameTest
     public void tearDown()
     {
     }
-    
-    
+
+
     @Test
-    public void initialisePlayerThreadsTest()
+    public void PebbleGameTest()
     {
-        
+        PebbleGame testGame = setUp();
+        assertEquals("Number of players did not match expected value", 3, testGame.getNumberOfPlayers(), 0);
+        for (int[] range : testGame.getRangess()) {
+          for (int i = 0; i < range.legnth; i ++) {
+
+          }
+        }
+
+    }
+
+    public void initialiseWhiteBags()
+    {
+      PebbleGame testGame = setUp();
+      ArrayList<Bag> whiteBags = testGame.getWhiteBags();
+
+      for (Bag whiteBag : whiteBags) {
+        assertSame("White bag is incorrect colour", "White", whiteBag.getColour());
+      }
+
+      for (int i; i < whiteBags.size(); i ++) {
+        switch (i) {
+          case 0:
+            assertSame("White bag has incorrect name", "A", whiteBag.getName());
+            break;
+          case 1:
+            assertSame("White bag has incorrect name", "B", whiteBag.getName());
+            break;
+          default:
+            assertSame("White bag has incorrect name", "C", whiteBag.getName());
+            break;
+        }
+      }
     }
 }
